@@ -1,3 +1,4 @@
+import Logo from "@/assets/svg/logo";
 import LoginForm from "@/components/form/login-form";
 import { GalleryVerticalEnd } from "lucide-react";
 import Link from "next/link";
@@ -8,9 +9,7 @@ export default function LoginPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <div className="flex size-11 items-center justify-center rounded-md text-primary-foreground">
-              <img src="/logo.svg" alt="Image" className="" />
-            </div>
+            <Logo/>
             PH HealthCare
           </Link>
         </div>

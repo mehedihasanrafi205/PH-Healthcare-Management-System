@@ -7,20 +7,38 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { loginSchema } from "@/validation";
 import { useState } from "react";
 import { Eye, EyeClosed } from "lucide-react";
+import useLogin from "@/hooks/auth.hook";
+import { email } from "zod";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
+  const { mutate: login, isPending: loginPending } = useLogin();
 
   const form = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "testeradmin@gamil.com",
+      password: "Tester@admin12345",
     },
     validators: {
       onSubmit: loginSchema,
     },
     onSubmit: ({ value }) => {
-      console.log(value);
+      const loginData = {
+        email: value.email,
+        password: value.password,
+      };
+
+      login(loginData, {
+        onSuccess: (res) => {
+          router.push("/");
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      });
     },
   });
 

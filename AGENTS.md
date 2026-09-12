@@ -1,9 +1,46 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# PH Healthcare Management System - Agent Instructions
 
-# This is NOT the Next.js you know
+## Commands
+- **Dev**: `bun dev` (uses turbopack)
+- **Build**: `bun build`
+- **Start**: `bun start`
+- **Lint**: `bun lint` (Biome)
+- **Format**: `bun format` (Biome --write)
+- **Typecheck**: `npx tsc --noEmit`
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+## Project Structure
+- **Framework**: Next.js 16 (App Router) with React 19 + React Compiler
+- **Package Manager**: Bun 1.4.2 (lockfile: `bun.lock`)
+- **Styling**: Tailwind CSS v4 (PostCSS plugin), shadcn/ui (base-nova style)
+- **State**: TanStack Query v5, TanStack Form
+- **Validation**: Zod v4
+- **API Client**: ofetch
+- **Path Alias**: `@/*` → `./src/*`
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## Route Groups
+- `(public)/(marketing)` — public marketing pages (home, about-us)
+- `(public)/(auth)` — login, register, account-verify
+- `(deshbord)` — protected dashboard (typo: "deshbord" not "dashboard")
+  - `admin/` — admin pages (e.g., approve-doctor)
 
-<!-- END:nextjs-agent-rules -->
+## Key Files
+- `src/lib/apiClient.ts` — ofetch instance with base URL
+- `src/api/auth.api.ts` — auth endpoints
+- `src/hooks/auth.hook.ts` — auth mutations/queries
+- `src/validation/auth.validation.ts` — Zod schemas
+- `src/providers/` — QueryClient, Google OAuth providers
+- `src/components/ui/` — shadcn components
+- `src/assets/svg/logo.tsx` — logo component (use this, not public/logo.svg)
+
+## Conventions
+- **Component naming**: PascalCase, `.tsx` extension
+- **Imports**: Use `@/` alias (e.g., `@/components/ui/button`)
+- **Forms**: TanStack Form + Zod validation
+- **API calls**: Use `apiClient` from `@/lib/apiClient`
+- **Biome**: Organizes imports on save, 2-space indent
+
+## Gotchas
+- React Compiler enabled (`reactCompiler: true` in next.config.ts)
+- Route group `(deshbord)` has a typo — keep as-is
+- No test suite configured
+- No CI/CD workflow found
