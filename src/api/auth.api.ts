@@ -1,8 +1,11 @@
 import apiClient from "@/lib/apiClient";
 
-
-const userLogin = (payload: { email: string; password: string }) => {
+export const userLogin = (payload: { email: string; password: string }) => {
   return apiClient("/auth/login", { method: "POST", body: payload });
 };
-
-export default userLogin;
+export const userLogout = () => {
+  return apiClient("/auth/logout", { method: "POST" });
+};
+export const getMe = () => {
+  return apiClient("/auth/me");
+};

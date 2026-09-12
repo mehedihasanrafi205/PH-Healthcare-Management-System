@@ -1,11 +1,19 @@
-import userLogin from "@/api/auth.api";
-import { useMutation } from "@tanstack/react-query";
-import React from "react";
+import { getMe, userLogin, userLogout } from "@/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-const useLogin = () => {
+export const useLogin = () => {
   return useMutation({
     mutationFn: userLogin,
   });
 };
-
-export default useLogin;
+export const useLogout = () => {
+  return useMutation({
+    mutationFn: userLogout,
+  });
+};
+export const useGetMe = () => {
+  return useQuery({
+    queryKey: ["user"],
+    queryFn: getMe,
+  });
+};

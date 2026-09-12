@@ -7,11 +7,12 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { loginSchema } from "@/validation";
 import { useState } from "react";
 import { Eye, EyeClosed } from "lucide-react";
-import useLogin from "@/hooks/auth.hook";
+
 import { email } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/toast";
 import { Spinner } from "../ui/spinner";
+import { useLogin } from "@/hooks";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
