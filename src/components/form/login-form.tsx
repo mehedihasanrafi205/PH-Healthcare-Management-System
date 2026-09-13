@@ -14,11 +14,10 @@ import { loginSchema } from "@/validation";
 import { useState } from "react";
 import { Eye, EyeClosed } from "lucide-react";
 
-import { email } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/toast";
 import { Spinner } from "../ui/spinner";
-import { useLogin } from "@/hooks";
+import { useGoogleOAuth, useLogin } from "@/hooks";
 import { GoogleLogin } from "@react-oauth/google";
 
 export default function LoginForm() {
@@ -26,6 +25,8 @@ export default function LoginForm() {
   const router = useRouter();
 
   const { mutate: login, isPending: loginPending } = useLogin();
+
+  const { mutate: googleLogin } = useGoogleOAuth();
 
   const form = useForm({
     defaultValues: {
@@ -61,6 +62,48 @@ export default function LoginForm() {
       });
     },
   });
+
+  const handleGoogleSuccess = (credentialResponse: { credential?: string }) => {
+    const idToken = credentialResponse.credential;
+
+    if (!idToken) {
+      toast.add({
+        title: "Google OAuth Failed",
+        description: "Something went wrong. Please try again",
+        type: "error",
+      });
+      return;
+    }
+
+    googleLogin(
+      { idToken },
+      {
+        onSuccess: () => {
+          toast.add({
+            title: "Logged in Successfully",
+            description: "Welcome back",
+            type: "success",
+          });
+          router.push("/");
+        },
+        onError: (err) => {
+          toast.add({
+            title: "Google OAuth Failed",
+            description:
+              err.message || "Something went wrong. Please try again",
+            type: "error",
+          });
+        },
+      },
+    );
+  };
+  const handleGoogleError = () => {
+    toast.add({
+      title: "Google OAuth Failed",
+      description: "Something went wrong. Please try again",
+      type: "error",
+    });
+  };
 
   return (
     <div className="flex flex-col gap-5">
@@ -154,7 +197,13 @@ export default function LoginForm() {
 
       <FieldSeparator>Or</FieldSeparator>
 
-      <GoogleLogin onSuccess={() => {}} onError={() => {}} />
+      <GoogleLogin
+        theme="outline"
+        shape="pill"
+        text="continue_with"
+        onSuccess={handleGoogleSuccess}
+        onError={handleGoogleError}
+      />
     </div>
   );
 }
