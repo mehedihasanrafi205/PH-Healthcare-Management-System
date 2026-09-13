@@ -19,29 +19,31 @@ import z from "zod";
 
 import { toast } from "../ui/toast";
 import GoogleLoginComponent from "../modules/google-login/GoogleLogin";
-import { PatientRegistrationSchema } from "@/validation";
+
+import { useRegistration } from "@/hooks";
+import { patientRegistrationSchema } from "@/validation";
 
 export function RegisterForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  type PatientDefaultValues = z.infer<typeof PatientRegistrationSchema>;
+  type PatientDefaultValues = z.infer<typeof patientRegistrationSchema>;
 
   const defaultValues: PatientDefaultValues = {
-    name: "Mir",
-    email: "mir@gmail.com",
-    contactNumber: "0191234567",
-    password: "@User123456",
-    confirmPassword: "@User123456",
+    name: "Test 1",
+    email: "yakog23460@bowlfuel.com",
+    contactNumber: "01345678900",
+    password: "Pa$$w0rd!",
+    confirmPassword: "Pa$$w0rd!",
   };
 
-//   const { mutate: registration } = useRegistration();
+  const { mutate: registration } = useRegistration();
 
   const form = useForm({
     defaultValues,
     validators: {
-      onSubmit: PatientRegistrationSchema,
+      onSubmit: patientRegistrationSchema,
     },
     onSubmit: async ({ value }) => {
       const registrationData = {
