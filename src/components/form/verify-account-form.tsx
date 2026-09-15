@@ -9,24 +9,46 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
-import { Field, FieldError, FieldLabel } from "../ui/field";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
+import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
+import { useEffect, useState } from "react";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useVerifyAccount } from "@/hooks";
 import { toast } from "../ui/toast";
 
-const VerifyAccountForm = () => {
+const RESEND_COOLDOWN = 120;
+
+export default function VerifyAccountForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [otp, srtOtp] = useState("");
+
+  const [otp, setOtp] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
+  const [resendTimer, setResendTimer] = useState(RESEND_COOLDOWN);
 
   const { mutate: verify, isPending: verifyPending } = useVerifyAccount();
 
-  const email = searchParams.get("email");
+  const email = searchParams.get("email") || "";
+
+  useEffect(() => {
+    if (!email) {
+      router.push("/");
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (resendTimer <= 0) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setResendTimer((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   const handleOTP = () => {
     if (otp.length !== 6) {
       setIsInvalid(true);
@@ -37,6 +59,7 @@ const VerifyAccountForm = () => {
       email,
       otp,
     };
+
     verify(verifyData, {
       onSuccess: (res) => {
         if (!res.success) {
@@ -90,7 +113,7 @@ const VerifyAccountForm = () => {
             <InputOTP
               maxLength={6}
               onChange={(value) => {
-                srtOtp(value);
+                setOtp(value);
                 if (isInvalid) {
                   setIsInvalid(false);
                 }
@@ -115,18 +138,16 @@ const VerifyAccountForm = () => {
                 errors={[{ message: "Invalid Code. Please try again" }]}
               />
             )}
+            <FieldDescription>Resend in {resendTimer}</FieldDescription>
           </Field>
         </form>
       </CardContent>
-
       <CardFooter>
-        <Button>Resend</Button>
+        <Button disabled={resendTimer > 0}>Resend</Button>
         <Button type="submit" form="otp-form">
           Submit
         </Button>
       </CardFooter>
     </Card>
   );
-};
-
-export default VerifyAccountForm;
+}
