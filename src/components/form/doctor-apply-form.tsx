@@ -35,7 +35,7 @@ import {
   MAX_FILE_SIZE,
   MAX_FILE_SIZE_BYTES,
 } from "@/validation";
-// import { formatFileSize } from "@/utils";
+import { formatFileSize } from "@/utils";
 // import { DoctorApplicationData } from "@/types";
 // import { useApplyAsDoctor } from "@/hooks";
 
