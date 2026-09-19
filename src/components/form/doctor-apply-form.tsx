@@ -36,8 +36,8 @@ import {
   MAX_FILE_SIZE_BYTES,
 } from "@/validation";
 import { formatFileSize } from "@/utils";
-// import { DoctorApplicationData } from "@/types";
-// import { useApplyAsDoctor } from "@/hooks";
+import { DoctorApplicationData } from "@/types";
+import { useApplyAsDoctor } from "@/hooks";
 
 //* Data signature
 // {
@@ -59,7 +59,7 @@ import { formatFileSize } from "@/utils";
 
 export default function DoctorApplyForm() {
   const router = useRouter();
-  // const { mutate: apply, isPending: applyPending } = useApplyAsDoctor();
+  const { mutate: apply, isPending: applyPending } = useApplyAsDoctor();
 
   const form = useForm({
     defaultValues: {
@@ -77,39 +77,39 @@ export default function DoctorApplyForm() {
       additionalFiles: [] as File[],
     },
 
-    // onSubmit: async ({ value }) => {
-    //   const doctorData: DoctorApplicationData = {
-    //     user: {
-    //       name: value.name.trim(),
-    //       email: value.email.trim(),
-    //     },
-    //     doctor: {
-    //       specialization: value.specialization.trim(),
-    //       licenseNumber: value.licenseNumber.trim(),
-    //       qualifications: value.qualifications.trim(),
-    //       experienceYears: Number(value.experienceYears),
-    //       contactNumber: value.phone.trim(),
-    //       address: value.address.trim(),
-    //       consultationFee: value.consultationFee.trim()
-    //         ? Number(value.consultationFee)
-    //         : undefined,
-    //       bio: value.bio.trim(),
-    //     },
-    //   };
+    onSubmit: async ({ value }) => {
+      const doctorData: DoctorApplicationData = {
+        user: {
+          name: value.name.trim(),
+          email: value.email.trim(),
+        },
+        doctor: {
+          specialization: value.specialization.trim(),
+          licenseNumber: value.licenseNumber.trim(),
+          qualifications: value.qualifications.trim(),
+          experienceYears: Number(value.experienceYears),
+          contactNumber: value.phone.trim(),
+          address: value.address.trim(),
+          consultationFee: value.consultationFee.trim()
+            ? Number(value.consultationFee)
+            : undefined,
+          bio: value.bio.trim(),
+        },
+      };
 
-    //   apply(
-    //     {
-    //       data: doctorData,
-    //       resume: value.resume as File,
-    //       additionalFiles: value.additionalFiles,
-    //     },
-    //     {
-    //       onSuccess: (res) => {
-    //         console.log(res);
-    //       },
-    //     },
-    //   );
-    // },
+      apply(
+        {
+          data: doctorData,
+          resume: value.resume as File,
+          additionalFiles: value.additionalFiles,
+        },
+        {
+          onSuccess: (res) => {
+            console.log(res);
+          },
+        },
+      );
+    },
   });
 
   return (
