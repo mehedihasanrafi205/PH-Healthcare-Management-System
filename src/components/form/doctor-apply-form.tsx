@@ -28,13 +28,13 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-// import {
-//   isAcceptedFileSize,
-//   isAcceptedFileType,
-//   MAX_ADDITIONAL_FILES,
-//   MAX_FILE_SIZE,
-//   MAX_FILE_SIZE_BYTES,
-// } from "@/validation";
+import {
+  isAcceptedFileSize,
+  isAcceptedFileType,
+  MAX_ADDITIONAL_FILES,
+  MAX_FILE_SIZE,
+  MAX_FILE_SIZE_BYTES,
+} from "@/validation";
 // import { formatFileSize } from "@/utils";
 // import { DoctorApplicationData } from "@/types";
 // import { useApplyAsDoctor } from "@/hooks";
