@@ -20,3 +20,9 @@ export interface DoctorApplicationPayload {
   additionalFiles: File[];
   data: DoctorApplicationData;
 }
+
+export interface DoctorApplicationPayload {
+  resume: File;
+  additionalFiles: File[];
+  data: DoctorApplicationData;
+}
