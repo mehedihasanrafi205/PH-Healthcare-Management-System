@@ -1,4 +1,4 @@
-"use clint";
+"use client";
 
 import {
   Sidebar,
