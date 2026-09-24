@@ -3,6 +3,7 @@
 import { useGetMe } from "@/hooks";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
+import AuthLoading from "./auth-loading";
 
 const AuthGuard = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -18,6 +19,14 @@ const AuthGuard = ({ children }: { children: ReactNode }) => {
       router.replace("/login");
     }
   }, [isPending, isError, user]);
+
+  if (isPending) {
+    return <AuthLoading />;
+  }
+
+  if (isError || !user) {
+    return <AuthLoading label="Redirecting..." />;
+  }
   return <>{children}</>;
 };
 
