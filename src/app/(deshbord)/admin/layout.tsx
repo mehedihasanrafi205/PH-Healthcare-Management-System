@@ -1,11 +1,7 @@
-import React from 'react'
+import React, { ReactNode } from "react";
 
-const AdminLayout = () => {
-  return (
-    <div>
-      AdminLayout
-    </div>
-  )
-}
+const AdminLayout = ({ children }: { children: ReactNode }) => {
+  return <div>{children}</div>;
+};
 
-export default AdminLayout
+export default AdminLayout;
