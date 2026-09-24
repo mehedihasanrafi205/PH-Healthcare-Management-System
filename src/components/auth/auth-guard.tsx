@@ -1,12 +1,14 @@
 "use client";
 
-import { useGetMe } from "@/hooks";
+
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 import AuthLoading from "./auth-loading";
+import { useGetMe } from "@/hooks";
 
-const AuthGuard = ({ children }: { children: ReactNode }) => {
+export default function AuthGuard({ children }: { children: ReactNode }) {
   const router = useRouter();
+
   const { data, isPending, isError } = useGetMe();
 
   const user = data?.data;
@@ -27,7 +29,6 @@ const AuthGuard = ({ children }: { children: ReactNode }) => {
   if (isError || !user) {
     return <AuthLoading label="Redirecting..." />;
   }
-  return <>{children}</>;
-};
 
-export default AuthGuard;
+  return <>{children}</>;
+}
